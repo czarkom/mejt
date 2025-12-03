@@ -15,7 +15,6 @@ export default function InventoryPage() {
     quantity: '',
     unit: InventoryUnit.PIECES,
     category: '',
-    expiry_date: '',
     notes: ''
   })
 
@@ -64,10 +63,7 @@ export default function InventoryPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          ...formData,
-          expiry_date: formData.expiry_date || null
-        }),
+        body: JSON.stringify(formData),
       })
 
       if (!response.ok) {
@@ -129,7 +125,6 @@ export default function InventoryPage() {
       quantity: '',
       unit: InventoryUnit.PIECES,
       category: '',
-      expiry_date: '',
       notes: ''
     })
     setShowForm(false)
@@ -142,7 +137,6 @@ export default function InventoryPage() {
       quantity: item.quantity.toString(),
       unit: item.unit,
       category: item.category || '',
-      expiry_date: item.expiry_date || '',
       notes: item.notes || ''
     })
     setEditingItem(item)
@@ -285,19 +279,6 @@ export default function InventoryPage() {
             </div>
 
             <div>
-              <label htmlFor="expiry_date" className="block text-sm font-medium text-gray-700 mb-1">
-                Expiry Date
-              </label>
-              <input
-                type="date"
-                id="expiry_date"
-                value={formData.expiry_date}
-                onChange={(e) => setFormData({ ...formData, expiry_date: e.target.value })}
-                className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            </div>
-
-            <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
                 Notes
               </label>
@@ -354,11 +335,7 @@ export default function InventoryPage() {
                 className={`bg-white rounded-lg shadow-md p-4 border-l-4 relative ${
                   item.to_buy
                     ? 'border-red-500 ring-2 ring-red-200'
-                    : isExpired(item.expiry_date) 
-                    ? 'border-red-500' 
-                    : isExpiringSoon(item.expiry_date) 
-                    ? 'border-yellow-500' 
-                    : 'border-green-500'
+                    : 'border-blue-500'
                 }`}
               >
                 {item.to_buy && (
@@ -407,18 +384,6 @@ export default function InventoryPage() {
                     <span className="font-medium">Category:</span> {item.category}
                   </p>
                 )}
-                
-                <p className={`text-sm mb-2 ${
-                  isExpired(item.expiry_date) 
-                    ? 'text-red-600 font-medium' 
-                    : isExpiringSoon(item.expiry_date) 
-                    ? 'text-yellow-600 font-medium' 
-                    : 'text-gray-600'
-                }`}>
-                  <span className="font-medium">Expires:</span> {formatDate(item.expiry_date)}
-                  {isExpired(item.expiry_date) && ' (EXPIRED)'}
-                  {isExpiringSoon(item.expiry_date) && !isExpired(item.expiry_date) && ' (Soon)'}
-                </p>
                 
                 {item.notes && (
                   <p className="text-sm text-gray-600">

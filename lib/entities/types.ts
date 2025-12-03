@@ -16,7 +16,6 @@ export interface InventoryItem {
   quantity: number;
   unit: InventoryUnit;
   category?: string;
-  expiry_date?: string;
   notes?: string;
   to_buy?: boolean;
 }
