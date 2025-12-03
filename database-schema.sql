@@ -21,7 +21,8 @@ CREATE TABLE inventory (
   unit VARCHAR(50) NOT NULL,
   category VARCHAR(100),
   expiry_date DATE,
-  notes TEXT
+  notes TEXT,
+  to_buy BOOLEAN DEFAULT FALSE
 );
 
 -- Create the bookings table for boat reservations
@@ -57,6 +58,7 @@ CREATE INDEX idx_logs_date ON logs(date DESC);
 CREATE INDEX idx_inventory_name ON inventory(name);
 CREATE INDEX idx_inventory_category ON inventory(category);
 CREATE INDEX idx_inventory_expiry ON inventory(expiry_date);
+CREATE INDEX idx_inventory_to_buy ON inventory(to_buy);
 CREATE INDEX idx_bookings_date_range ON bookings(start_date, end_date);
 CREATE INDEX idx_bookings_person ON bookings(person);
 CREATE INDEX idx_bookings_status ON bookings(status);

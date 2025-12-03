@@ -9,6 +9,7 @@ export default function InventoryPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null)
   const [filterCategory, setFilterCategory] = useState('')
+  const [showToBuyOnly, setShowToBuyOnly] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
     quantity: '',
@@ -22,9 +23,14 @@ export default function InventoryPage() {
   const fetchItems = async () => {
     try {
       setLoading(true)
-      const url = filterCategory 
-        ? `/api/inventory?category=${encodeURIComponent(filterCategory)}`
-        : '/api/inventory'
+      let url = '/api/inventory'
+      
+      if (showToBuyOnly) {
+        url = '/api/inventory/to-buy'
+      } else if (filterCategory) {
+        url = `/api/inventory?category=${encodeURIComponent(filterCategory)}`
+      }
+      
       const response = await fetch(url)
       
       if (!response.ok) {
@@ -99,6 +105,24 @@ export default function InventoryPage() {
     }
   }
 
+  // Toggle to buy status
+  const toggleToBuy = async (id: number) => {
+    try {
+      const response = await fetch(`/api/inventory/${id}/toggle-to-buy`, {
+        method: 'PATCH',
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to toggle to buy status')
+      }
+
+      fetchItems()
+    } catch (error) {
+      console.error('Error toggling to buy:', error)
+      alert('Error updating to buy status')
+    }
+  }
+
   const resetForm = () => {
     setFormData({
       name: '',
@@ -128,7 +152,7 @@ export default function InventoryPage() {
   // Load items on component mount
   useEffect(() => {
     fetchItems()
-  }, [filterCategory])
+  }, [filterCategory, showToBuyOnly])
 
   const formatDate = (dateString: string | undefined) => {
     if (!dateString) return 'No expiry'
@@ -176,6 +200,17 @@ export default function InventoryPage() {
             <option key={category} value={category}>{category}</option>
           ))}
         </select>
+        
+        <button
+          onClick={() => setShowToBuyOnly(!showToBuyOnly)}
+          className={`px-4 py-2 rounded-md transition-colors ${
+            showToBuyOnly 
+              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+              : 'bg-red-500 text-white hover:bg-red-600'
+          }`}
+        >
+          {showToBuyOnly ? 'Show All' : 'Show To Buy Only'}
+        </button>
       </div>
 
       {/* Add/Edit Item Form */}
@@ -315,17 +350,36 @@ export default function InventoryPage() {
             {items.map((item) => (
               <div 
                 key={item.id} 
-                className={`bg-white rounded-lg shadow-md p-4 border-l-4 ${
-                  isExpired(item.expiry_date) 
+                className={`bg-white rounded-lg shadow-md p-4 border-l-4 relative ${
+                  item.to_buy
+                    ? 'border-red-500 ring-2 ring-red-200'
+                    : isExpired(item.expiry_date) 
                     ? 'border-red-500' 
                     : isExpiringSoon(item.expiry_date) 
                     ? 'border-yellow-500' 
                     : 'border-green-500'
                 }`}
               >
+                {item.to_buy && (
+                  <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+                    TO BUY
+                  </div>
+                )}
+                
                 <div className="flex justify-between items-start mb-2">
-                  <h3 className="text-lg font-semibold text-gray-800">{item.name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 pr-16">{item.name}</h3>
                   <div className="flex space-x-1">
+                    <button
+                      onClick={() => toggleToBuy(item.id!)}
+                      className={`px-2 py-1 rounded text-xs font-medium transition-colors ${
+                        item.to_buy 
+                          ? 'text-red-600 bg-red-100 hover:bg-red-200 border border-red-300' 
+                          : 'text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-300'
+                      }`}
+                      title={item.to_buy ? 'Remove from shopping list' : 'Add to shopping list'}
+                    >
+                      🛒 To buy
+                    </button>
                     <button
                       onClick={() => startEdit(item)}
                       className="text-blue-600 hover:text-blue-800 p-1"

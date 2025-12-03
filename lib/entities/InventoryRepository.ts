@@ -76,4 +76,37 @@ export class InventoryRepository {
     if (error) throw error;
     return data || [];
   }
+
+  static async getToBuyItems(): Promise<InventoryItem[]> {
+    const { data, error } = await supabase
+      .from('inventory')
+      .select('*')
+      .eq('to_buy', true)
+      .order('name', { ascending: true });
+    
+    if (error) throw error;
+    return data || [];
+  }
+
+  static async toggleToBuy(id: number): Promise<InventoryItem> {
+    // First get current state
+    const { data: currentItem, error: fetchError } = await supabase
+      .from('inventory')
+      .select('to_buy')
+      .eq('id', id)
+      .single();
+    
+    if (fetchError) throw fetchError;
+    
+    // Toggle the to_buy status
+    const { data, error } = await supabase
+      .from('inventory')
+      .update({ to_buy: !currentItem.to_buy, updated_at: new Date().toISOString() })
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw error;
+    return data;
+  }
 }

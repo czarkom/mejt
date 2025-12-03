@@ -18,6 +18,7 @@ export interface InventoryItem {
   category?: string;
   expiry_date?: string;
   notes?: string;
+  to_buy?: boolean;
 }
 
 export interface Booking {
