@@ -196,9 +196,8 @@ export default function InventoryPage() {
           className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
         >
           <option value="">All Categories</option>
-          {categories.map(category => (
-            <option key={category} value={category}>{category}</option>
-          ))}
+          <option value="Food">Food</option>
+          <option value="Utilities">Utilities</option>
         </select>
         
         <button
@@ -239,14 +238,16 @@ export default function InventoryPage() {
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
                   Category
                 </label>
-                <input
-                  type="text"
+                <select
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Food, Safety, Tools, etc."
-                />
+                >
+                  <option value="">Select Category</option>
+                  <option value="Food">Food</option>
+                  <option value="Utilities">Utilities</option>
+                </select>
               </div>
             </div>
             
