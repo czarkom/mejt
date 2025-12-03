@@ -24,25 +24,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pl">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <nav className="bg-blue-600 text-white p-4">
           <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold">⛵ Boat Logbook</h1>
+            <h1 className="text-xl font-bold">⛵ Mejt</h1>
             <div className="space-x-4">
               <Link href="/" className="hover:underline">
-                Home
+                Informacje
               </Link>
               <Link href="/logbook" className="hover:underline">
-                Logbook
+                Dziennik pokładowy
               </Link>
               <Link href="/inventory" className="hover:underline">
-                Inventory
+                Zapasy
               </Link>
               <Link href="/calendar" className="hover:underline">
-                Calendar
+                Kalendarz
               </Link>
             </div>
           </div>

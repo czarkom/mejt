@@ -173,12 +173,12 @@ export default function InventoryPage() {
   return (
     <div className="max-w-6xl mx-auto p-8">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Boat Inventory</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Inwentarz łodzi</h1>
         <button
           onClick={() => setShowForm(!showForm)}
           className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          {showForm ? 'Cancel' : '+ Add Item'}
+          {showForm ? 'Anuluj' : '+ Dodaj'}
         </button>
       </div>
 
@@ -189,9 +189,9 @@ export default function InventoryPage() {
           onChange={(e) => setFilterCategory(e.target.value)}
           className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
         >
-          <option value="">All Categories</option>
-          <option value="Food">Food</option>
-          <option value="Utilities">Utilities</option>
+          <option value="">Wszystkie kategorie</option>
+          <option value="Food">Jedzenie</option>
+          <option value="Utilities">Użytkowe</option>
         </select>
         
         <button
@@ -202,7 +202,7 @@ export default function InventoryPage() {
               : 'bg-red-500 text-white hover:bg-red-600'
           }`}
         >
-          {showToBuyOnly ? 'Show All' : 'Show To Buy Only'}
+          {showToBuyOnly ? 'Pokaż wszystkie' : 'Pokaż listę zakupów'}
         </button>
       </div>
 
@@ -210,13 +210,13 @@ export default function InventoryPage() {
       {showForm && (
         <div className="bg-white rounded-lg shadow-md p-6 mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            {editingItem ? 'Edit Item' : 'Add New Item'}
+            {editingItem ? 'Edytuj przedmiot' : 'Dodaj'}
           </h2>
           <form onSubmit={saveItem} className="space-y-4">
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Item Name *
+                  Nazwa *
                 </label>
                 <input
                   type="text"
@@ -224,13 +224,13 @@ export default function InventoryPage() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Coffee, Milk, Rope, etc."
+                  placeholder="Kawa, Mleko, Lina, itp."
                   required
                 />
               </div>
               <div>
                 <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-                  Category
+                  Kategoria
                 </label>
                 <select
                   id="category"
@@ -238,9 +238,9 @@ export default function InventoryPage() {
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="">Select Category</option>
-                  <option value="Food">Food</option>
-                  <option value="Utilities">Utilities</option>
+                  <option value="">Wybierz kategorię</option>
+                  <option value="Food">Jedzenie</option>
+                  <option value="Utilities">Użytkowe</option>
                 </select>
               </div>
             </div>
@@ -248,7 +248,7 @@ export default function InventoryPage() {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">
-                  Quantity *
+                  Ilość *
                 </label>
                 <input
                   type="number"
@@ -262,7 +262,7 @@ export default function InventoryPage() {
               </div>
               <div>
                 <label htmlFor="unit" className="block text-sm font-medium text-gray-700 mb-1">
-                  Unit *
+                  Jednostka *
                 </label>
                 <select
                   id="unit"
@@ -280,7 +280,7 @@ export default function InventoryPage() {
 
             <div>
               <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
-                Notes
+                Notatki
               </label>
               <textarea
                 id="notes"
@@ -288,7 +288,7 @@ export default function InventoryPage() {
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                 rows={3}
                 className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Additional information..."
+                placeholder="Dodatkowe informacje..."
               />
             </div>
 
@@ -298,13 +298,13 @@ export default function InventoryPage() {
                 onClick={resetForm}
                 className="px-4 py-2 text-gray-600 bg-gray-200 rounded-md hover:bg-gray-300 transition-colors"
               >
-                Cancel
+                Anuluj
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
               >
-                {editingItem ? 'Update Item' : 'Add Item'}
+                {editingItem ? 'Aktualizuj' : 'Dodaj'}
               </button>
             </div>
           </form>
@@ -315,16 +315,16 @@ export default function InventoryPage() {
       <div className="space-y-4">
         {loading ? (
           <div className="text-center py-8">
-            <p className="text-gray-600">Loading inventory...</p>
+            <p className="text-gray-600">Ładowanie zapasów...</p>
           </div>
         ) : items.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No inventory items yet.</p>
+            <p className="text-gray-600 mb-4">Nie ma jeszcze żadnych przedmiotów.</p>
             <button
               onClick={() => setShowForm(true)}
               className="text-blue-600 hover:underline"
             >
-              Add your first item
+              Dodaj swój pierwszy przedmiot
             </button>
           </div>
         ) : (
@@ -340,7 +340,7 @@ export default function InventoryPage() {
               >
                 {item.to_buy && (
                   <div className="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
-                    TO BUY
+                    DO KUPIENIA
                   </div>
                 )}
                 
@@ -354,21 +354,21 @@ export default function InventoryPage() {
                           ? 'text-red-600 bg-red-100 hover:bg-red-200 border border-red-300' 
                           : 'text-gray-600 bg-gray-100 hover:bg-gray-200 border border-gray-300'
                       }`}
-                      title={item.to_buy ? 'Remove from shopping list' : 'Add to shopping list'}
+                      title={item.to_buy ? 'Usuń z listy zakupów' : 'Dodaj do listy zakupów'}
                     >
-                      🛒 To buy
+                      🛒 Do kupienia
                     </button>
                     <button
                       onClick={() => startEdit(item)}
                       className="text-blue-600 hover:text-blue-800 p-1"
-                      title="Edit"
+                      title="Edytuj"
                     >
                       ✏️
                     </button>
                     <button
                       onClick={() => deleteItem(item.id!)}
                       className="text-red-600 hover:text-red-800 p-1"
-                      title="Delete"
+                      title="Usuń"
                     >
                       🗑️
                     </button>
@@ -381,18 +381,18 @@ export default function InventoryPage() {
                 
                 {item.category && (
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Category:</span> {item.category}
+                    <span className="font-medium">Kategoria:</span> {item.category}
                   </p>
                 )}
                 
                 {item.notes && (
                   <p className="text-sm text-gray-600">
-                    <span className="font-medium">Notes:</span> {item.notes}
+                    <span className="font-medium">Notatki:</span> {item.notes}
                   </p>
                 )}
                 
                 <p className="text-xs text-gray-400 mt-2">
-                  Added: {formatDate(item.created_at)}
+                  Dodano: {formatDate(item.created_at)}
                 </p>
               </div>
             ))}
