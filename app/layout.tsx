@@ -30,7 +30,13 @@ export default function RootLayout({
       >
         <nav className="bg-blue-600 text-white p-4">
           <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold">⛵ Mejt</h1>
+            <div className="flex items-center">
+              <img 
+                src="/mejt_white_letters.png" 
+                alt="Mejt" 
+                className="h-10"
+              />
+            </div>
             <div className="space-x-4">
               <Link href="/" className="hover:underline">
                 Informacje
