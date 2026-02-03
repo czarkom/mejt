@@ -46,7 +46,7 @@ export default function Home() {
               </div>
               <div className="flex justify-between">
                 <span className="font-medium">Ulubione miejsce:</span>
-                <span>-</span>
+                <span>Wierzba</span>
               </div>
             </div>
           </div>
@@ -54,14 +54,28 @@ export default function Home() {
 
         <div className="mt-8 p-4 bg-blue-50 rounded-lg">
           <h3 className="text-lg font-semibold text-blue-800 mb-2">
-            Jak zacząć
+            O aplikacji
           </h3>
-          <p className="text-blue-700">
-            Zacznij dokumentować swoje rejsy odwiedzając sekcję{" "}
+          <p className="text-blue-700 mb-3">
+            Możesz dokumentować rejsy odwiedzając sekcję{" "}
             <a href="/logbook" className="underline font-medium">
               Dziennik
-            </a>{" "}
-            Możesz dodawać nowe wpisy, śledzić lokalizacje, warunki pogodowe i wiele więcej.
+            </a>.{" "}
+            Możesz dodawać nowe wpisy, śledzić lokalizacje, warunki pogodowe.
+          </p>
+          <p className="text-blue-700 mb-3">
+            Zarządzaj wyposażeniem łodzi w sekcji{" "}
+            <a href="/inventory" className="underline font-medium">
+              Zapasy
+            </a>.{" "}
+            Śledź stan zapasów, dodawaj nowe oraz oznaczaj co trzeba dokupić.
+          </p>
+          <p className="text-blue-700">
+            Planuj rejsy i rezerwuj łódź korzystając z{" "}
+            <a href="/calendar" className="underline font-medium">
+              Kalendarza
+            </a>.{" "}
+            Dodawaj nowe rezerwacje, sprawdzaj dostępność i przeglądaj nadchodzące wyprawy.
           </p>
         </div>
       </div>
