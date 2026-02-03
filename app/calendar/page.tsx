@@ -194,8 +194,8 @@ export default function CalendarPage() {
         <div
           key={day}
           className={`p-2 min-h-[60px] border border-gray-200 ${
-            isToday ? 'bg-blue-100 border-blue-300' : ''
-          } ${isBooked ? 'bg-red-100' : 'bg-white'}`}
+            isBooked ? 'bg-red-100' : isToday ? 'bg-blue-100 border-blue-300' : 'bg-white'
+          }`}
         >
           <div className={`text-sm font-medium ${isToday ? 'text-blue-800' : 'text-gray-800'}`}>
             {day}
