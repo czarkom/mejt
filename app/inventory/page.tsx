@@ -187,34 +187,37 @@ export default function InventoryPage() {
       </div>
 
       {/* Filters */}
-      <div className="mb-6 flex flex-wrap gap-4">
+      <div className="mb-6 flex flex-col md:flex-row md:items-center gap-4">
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Szukaj po nazwie..."
-          className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+          className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 w-full md:w-auto"
         />
-        <select
-          value={filterCategory}
-          onChange={(e) => setFilterCategory(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Wszystkie kategorie</option>
-          <option value="Food">Jedzenie</option>
-          <option value="Utilities">Użytkowe</option>
-        </select>
-        
-        <button
-          onClick={() => setShowToBuyOnly(!showToBuyOnly)}
-          className={`px-4 py-2 rounded-md transition-colors ${
-            showToBuyOnly 
-              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
-              : 'bg-red-500 text-white hover:bg-red-600'
-          }`}
-        >
-          {showToBuyOnly ? 'Pokaż wszystkie' : 'Pokaż listę zakupów'}
-        </button>
+
+        <div className="flex gap-4 w-full md:w-auto">
+          <select
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+            className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 flex-1 min-w-0"
+          >
+            <option value="">Wszystkie kategorie</option>
+            <option value="Food">Jedzenie</option>
+            <option value="Utilities">Użytkowe</option>
+          </select>
+          
+          <button
+            onClick={() => setShowToBuyOnly(!showToBuyOnly)}
+            className={`px-4 py-2 rounded-md transition-colors flex-none ${
+              showToBuyOnly 
+                ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' 
+                : 'bg-red-500 text-white hover:bg-red-600'
+            }`}
+          >
+            {showToBuyOnly ? 'Pokaż wszystkie' : 'Pokaż listę zakupów'}
+          </button>
+        </div>
       </div>
 
       {/* Add/Edit Item Form */}
