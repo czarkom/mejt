@@ -246,7 +246,13 @@ export default function CalendarPage() {
   }
 
   const upcomingBookings = bookings
-    .filter(booking => new Date(booking.start_date) >= new Date())
+    .filter(booking => {
+      const bookingDate = new Date(booking.start_date)
+      const today = new Date()
+      bookingDate.setHours(0, 0, 0, 0)
+      today.setHours(0, 0, 0, 0)
+      return bookingDate >= today
+    })
     .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
     .slice(0, 1)
 
@@ -383,6 +389,7 @@ export default function CalendarPage() {
                     id="start_date"
                     value={formData.start_date}
                     onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                    min={new Date().toISOString().split('T')[0]}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
                   />
