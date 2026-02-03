@@ -31,16 +31,14 @@ export interface Booking {
 }
 
 export enum InventoryUnit {
-  PIECES = 'pieces',
-  GRAMS = 'grams',
+  PIECES = 'szt',
+  GRAMS = 'g',
   KILOGRAMS = 'kg',
-  LITERS = 'liters',
+  LITERS = 'l',
   MILLILITERS = 'ml',
-  BOTTLES = 'bottles',
-  CANS = 'cans',
-  PACKAGES = 'packages',
-  METERS = 'meters',
-  CENTIMETERS = 'cm'
+  BOTTLES = 'butelki',
+  CANS = 'puszki',
+  PACKAGES = 'opakowania'
 }
 
 export enum BookingPerson {
