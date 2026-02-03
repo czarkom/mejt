@@ -143,6 +143,27 @@ export default function CalendarPage() {
     })
   }
 
+  const isPastBooking = (booking: Booking) => {
+    const today = new Date()
+    const endDate = new Date(booking.end_date)
+    today.setHours(0, 0, 0, 0)
+    endDate.setHours(0, 0, 0, 0)
+    return endDate < today
+  }
+
+  // Separate bookings into current/future and past
+  const currentBookings = bookings.filter(booking => !isPastBooking(booking))
+  const pastBookings = bookings.filter(booking => isPastBooking(booking))
+
+  const getDaysRemaining = (startDate: string) => {
+    const today = new Date()
+    const reservationDate = new Date(startDate)
+    today.setHours(0, 0, 0, 0)
+    reservationDate.setHours(0, 0, 0, 0)
+    const timeDiff = reservationDate.getTime() - today.getTime()
+    return Math.ceil(timeDiff / (1000 * 60 * 60 * 24))
+  }
+
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
   }
@@ -227,7 +248,7 @@ export default function CalendarPage() {
   const upcomingBookings = bookings
     .filter(booking => new Date(booking.start_date) >= new Date())
     .sort((a, b) => new Date(a.start_date).getTime() - new Date(b.start_date).getTime())
-    .slice(0, 5)
+    .slice(0, 1)
 
   return (
     <div className="max-w-6xl mx-auto p-8">
@@ -288,43 +309,36 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* Upcoming Bookings */}
+        {/* Nearest Booking */}
         <div>
           <div className="bg-white rounded-lg shadow-md p-6">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Nadchodzące rezerwacje</h3>
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">Najbliższa rezerwacja</h3>
             {upcomingBookings.length === 0 ? (
               <p className="text-gray-600">Brak nadchodzących rezerwacji</p>
             ) : (
               <div className="space-y-3">
-                {upcomingBookings.map((booking) => (
-                  <div key={booking.id} className="border border-gray-200 rounded p-3">
-                    <div className="flex justify-between items-start mb-1">
-                      <span className="font-medium text-gray-800">{booking.person}</span>
-                      <div className="flex space-x-1">
-                        <button
-                          onClick={() => startEdit(booking)}
-                          className="text-blue-600 hover:text-blue-800 text-xs"
-                          title="Edytuj"
-                        >
-                          ✏️
-                        </button>
-                        <button
-                          onClick={() => deleteBooking(booking.id!)}
-                          className="text-red-600 hover:text-red-800 text-xs"
-                          title="Usuń"
-                        >
-                          🗑️
-                        </button>
+                {upcomingBookings.map((booking) => {
+                  const daysRemaining = getDaysRemaining(booking.start_date)
+                  return (
+                    <div key={booking.id} className="border border-gray-200 rounded p-3">
+                      <div className="mb-1">
+                        <span className="font-medium text-gray-800">{booking.person}</span>
                       </div>
+                      <p className="text-sm text-gray-600">
+                        {formatDateShort(booking.start_date)} - {formatDateShort(booking.end_date)}
+                      </p>
+                      <p className="text-sm text-blue-600 font-medium mt-1">
+                        {daysRemaining === 0 ? 'Dziś!' : 
+                         daysRemaining === 1 ? 'Jutro' : 
+                         daysRemaining < 0 ? 'Rozpoczęta' :
+                         `Za ${daysRemaining} dni`}
+                      </p>
+                      {booking.comment && (
+                        <p className="text-xs text-gray-500 mt-1">{booking.comment}</p>
+                      )}
                     </div>
-                    <p className="text-sm text-gray-600">
-                      {formatDateShort(booking.start_date)} - {formatDateShort(booking.end_date)}
-                    </p>
-                    {booking.comment && (
-                      <p className="text-xs text-gray-500 mt-1">{booking.comment}</p>
-                    )}
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             )}
           </div>
@@ -423,16 +437,16 @@ export default function CalendarPage() {
         </div>
       )}
 
-      {/* All Bookings List */}
+      {/* Current/Future Bookings List */}
       <div className="mt-8 bg-white rounded-lg shadow-md p-6">
-        <h3 className="text-lg font-semibold text-gray-800 mb-4">Wszystkie rezerwacje</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">Zarządzaj rezerwacjami</h3>
         {loading ? (
           <div className="text-center py-8">
             <p className="text-gray-600">Ładowanie rezerwacji...</p>
           </div>
-        ) : bookings.length === 0 ? (
+        ) : currentBookings.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">Nie ma jeszcze żadnych rezerwacji.</p>
+            <p className="text-gray-600 mb-4">Nie ma nadchodzących rezerwacji.</p>
             <button
               onClick={() => setShowForm(true)}
               className="text-blue-600 hover:underline"
@@ -442,7 +456,7 @@ export default function CalendarPage() {
           </div>
         ) : (
           <div className="space-y-3">
-            {bookings.map((booking) => (
+            {currentBookings.map((booking) => (
               <div key={booking.id} className="flex justify-between items-center p-4 border border-gray-200 rounded">
                 <div>
                   <p className="font-medium text-gray-800">{booking.person}</p>
@@ -474,6 +488,28 @@ export default function CalendarPage() {
           </div>
         )}
       </div>
+
+      {/* Past Bookings List */}
+      {pastBookings.length > 0 && (
+        <div className="mt-8 bg-white rounded-lg shadow-md p-6">
+          <h3 className="text-lg font-semibold text-gray-800 mb-4">Przeszłe rezerwacje</h3>
+          <div className="space-y-3">
+            {pastBookings.map((booking) => (
+              <div key={booking.id} className="p-4 border border-gray-200 rounded bg-gray-50">
+                <div>
+                  <p className="font-medium text-gray-600">{booking.person}</p>
+                  <p className="text-sm text-gray-500">
+                    {formatDate(booking.start_date)} - {formatDate(booking.end_date)}
+                  </p>
+                  {booking.comment && (
+                    <p className="text-sm text-gray-400 mt-1">{booking.comment}</p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
