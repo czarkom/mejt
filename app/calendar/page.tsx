@@ -152,7 +152,10 @@ export default function CalendarPage() {
   }
 
   const isDateBooked = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0]
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const dateStr = `${year}-${month}-${day}`
     return bookings.some(booking => 
       dateStr >= booking.start_date && 
       dateStr <= booking.end_date
@@ -160,7 +163,10 @@ export default function CalendarPage() {
   }
 
   const getBookingForDate = (date: Date) => {
-    const dateStr = date.toISOString().split('T')[0]
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const day = String(date.getDate()).padStart(2, '0')
+    const dateStr = `${year}-${month}-${day}`
     return bookings.find(booking => 
       dateStr >= booking.start_date && 
       dateStr <= booking.end_date
