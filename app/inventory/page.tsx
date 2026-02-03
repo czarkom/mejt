@@ -10,6 +10,7 @@ export default function InventoryPage() {
   const [editingItem, setEditingItem] = useState<InventoryItem | null>(null)
   const [filterCategory, setFilterCategory] = useState('')
   const [showToBuyOnly, setShowToBuyOnly] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
   const [formData, setFormData] = useState({
     name: '',
     quantity: '',
@@ -169,6 +170,9 @@ export default function InventoryPage() {
   }
 
   const categories = [...new Set(items.map(item => item.category).filter(Boolean))]
+  const displayedItems = searchQuery
+    ? items.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    : items
 
   return (
     <div className="max-w-6xl mx-auto p-8">
@@ -184,6 +188,13 @@ export default function InventoryPage() {
 
       {/* Filters */}
       <div className="mb-6 flex flex-wrap gap-4">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder="Szukaj po nazwie..."
+          className="p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+        />
         <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value)}
@@ -313,7 +324,7 @@ export default function InventoryPage() {
 
       {/* Inventory Items List */}
       <div className="space-y-4">
-        {loading ? (
+        { loading ? (
           <div className="text-center py-8">
             <p className="text-gray-600">Ładowanie zapasów...</p>
           </div>
@@ -327,9 +338,13 @@ export default function InventoryPage() {
               Dodaj swój pierwszy przedmiot
             </button>
           </div>
+        ) : displayedItems.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600 mb-4">Nie znaleziono przedmiotów pasujących do wyszukiwania.</p>
+          </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {items.map((item) => (
+            {displayedItems.map((item) => (
               <div 
                 key={item.id} 
                 className={`bg-white rounded-lg shadow-md p-4 border-l-4 relative ${
@@ -397,7 +412,8 @@ export default function InventoryPage() {
               </div>
             ))}
           </div>
-        )}
+        )
+      }
       </div>
     </div>
   )
