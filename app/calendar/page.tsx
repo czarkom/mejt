@@ -312,7 +312,7 @@ export default function CalendarPage() {
                           className="text-red-600 hover:text-red-800 text-xs"
                           title="Usuń"
                         >
-                          🛡️
+                          🗑️
                         </button>
                       </div>
                     </div>
@@ -486,7 +486,7 @@ export default function CalendarPage() {
                     className="text-red-600 hover:text-red-800 p-2"
                     title="Usuń"
                   >
-                    🛡️
+                    🗑️
                   </button>
                 </div>
               </div>
