@@ -40,13 +40,13 @@ export default function CalendarPage() {
     e.preventDefault()
     
     if (!formData.start_date || !formData.end_date) {
-      alert('Please fill in the start and end dates')
+      alert('Proszę wypełnić pola z datą rozpoczęcia i zakończenia')
       return
     }
 
     // Validate date range
     if (new Date(formData.start_date) > new Date(formData.end_date)) {
-      alert('Start date must be before or equal to end date')
+      alert('Początkowa data musi być wcześniejsza lub równa końcowej dacie')
       return
     }
 
@@ -72,13 +72,13 @@ export default function CalendarPage() {
       fetchBookings()
     } catch (error) {
       console.error('Error saving booking:', error)
-      alert(error instanceof Error ? error.message : `Error ${editingBooking ? 'updating' : 'creating'} booking`)
+      alert(error instanceof Error ? error.message : `Błąd podczas ${editingBooking ? 'aktualizowania' : 'tworzenia'} rezerwacji`)
     }
   }
 
   // Delete booking
   const deleteBooking = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this booking?')) {
+    if (!confirm('Czy na pewno chcesz usunąć tę rezerwację?')) {
       return
     }
 
@@ -94,7 +94,7 @@ export default function CalendarPage() {
       fetchBookings()
     } catch (error) {
       console.error('Error deleting booking:', error)
-      alert('Error deleting booking')
+      alert('Błąd podczas usuwania rezerwacji')
     }
   }
 

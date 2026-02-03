@@ -82,7 +82,7 @@ export default function InventoryPage() {
 
   // Delete inventory item
   const deleteItem = async (id: number) => {
-    if (!confirm('Are you sure you want to delete this item?')) {
+    if (!confirm('Czy na pewno chcesz usunąć ten produkt?')) {
       return
     }
 
