@@ -169,6 +169,17 @@ export default function InventoryPage() {
     return expiryDate < today
   }
 
+  const translateCategory = (category: string | undefined) => {
+    switch (category) {
+      case 'Food':
+        return 'Jedzenie'
+      case 'Utilities':
+        return 'Użytkowe'
+      default:
+        return category
+    }
+  }
+
   const categories = [...new Set(items.map(item => item.category).filter(Boolean))]
   const displayedItems = searchQuery
     ? items.filter(i => i.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -399,7 +410,7 @@ export default function InventoryPage() {
                 
                 {item.category && (
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Kategoria:</span> {item.category}
+                    <span className="font-medium">Kategoria:</span> {translateCategory(item.category)}
                   </p>
                 )}
                 
