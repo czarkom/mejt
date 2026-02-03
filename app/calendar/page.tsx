@@ -375,6 +375,7 @@ export default function CalendarPage() {
                     type="date"
                     id="end_date"
                     value={formData.end_date}
+                    min={formData.start_date || undefined}
                     onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     required
