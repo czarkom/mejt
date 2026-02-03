@@ -42,7 +42,7 @@ export default function RootLayout({
                 Informacje
               </Link>
               <Link href="/logbook" className="hover:underline">
-                Dziennik pokładowy
+                Dziennik
               </Link>
               <Link href="/inventory" className="hover:underline">
                 Zapasy
