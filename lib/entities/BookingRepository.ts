@@ -82,7 +82,6 @@ export class BookingRepository {
     const { data, error } = await supabase
       .from('bookings')
       .select('id')
-      .eq('status', 'confirmed')
       .or(`and(start_date.lte.${endDate},end_date.gte.${startDate})`);
     
     if (error) throw error;

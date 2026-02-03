@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BookingRepository } from '@/lib/entities/BookingRepository';
-import { BookingPerson, BookingStatus } from '@/lib/entities/types';
+import { BookingPerson } from '@/lib/entities/types';
 
 export async function GET(request: NextRequest) {
   try {
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { person, start_date, end_date, comment, status = 'confirmed' } = body;
+    const { person, start_date, end_date, comment } = body;
 
     if (!person || !start_date || !end_date) {
       return NextResponse.json(
@@ -48,14 +48,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate status
-    if (!Object.values(BookingStatus).includes(status as BookingStatus)) {
-      return NextResponse.json(
-        { error: 'Invalid status' },
-        { status: 400 }
-      );
-    }
-
     // Validate date range
     const startDateObj = new Date(start_date);
     const endDateObj = new Date(end_date);
@@ -67,15 +59,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check availability if status is confirmed
-    if (status === 'confirmed') {
-      const isAvailable = await BookingRepository.checkAvailability(start_date, end_date);
-      if (!isAvailable) {
-        return NextResponse.json(
-          { error: 'Boat is not available for the selected dates' },
-          { status: 409 }
-        );
-      }
+    // Check availability
+    const isAvailable = await BookingRepository.checkAvailability(start_date, end_date);
+    if (!isAvailable) {
+      return NextResponse.json(
+        { error: 'Boat is not available for the selected dates' },
+        { status: 409 }
+      );
     }
 
     const newBooking = await BookingRepository.create({
@@ -83,7 +73,6 @@ export async function POST(request: NextRequest) {
       start_date,
       end_date,
       comment,
-      status: status as BookingStatus,
     });
 
     return NextResponse.json(newBooking, { status: 201 });

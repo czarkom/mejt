@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BookingRepository } from '@/lib/entities/BookingRepository';
-import { BookingPerson, BookingStatus } from '@/lib/entities/types';
+import { BookingPerson } from '@/lib/entities/types';
 
 export async function GET(
   request: NextRequest,
@@ -54,14 +54,6 @@ export async function PUT(
     if (body.person && !Object.values(BookingPerson).includes(body.person as BookingPerson)) {
       return NextResponse.json(
         { error: 'Invalid person. Must be one of: Mama, Tata, Matiz, Mroziak, Pela' },
-        { status: 400 }
-      );
-    }
-
-    // Validate status if provided
-    if (body.status && !Object.values(BookingStatus).includes(body.status as BookingStatus)) {
-      return NextResponse.json(
-        { error: 'Invalid status' },
         { status: 400 }
       );
     }

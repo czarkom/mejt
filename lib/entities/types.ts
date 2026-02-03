@@ -27,7 +27,6 @@ export interface Booking {
   start_date: string;
   end_date: string;
   comment?: string;
-  status: BookingStatus;
 }
 
 export enum InventoryUnit {
@@ -47,10 +46,4 @@ export enum BookingPerson {
   MATIZ = 'Matiz',
   MROZIAK = 'Mroziak',
   PELA = 'Pela'
-}
-
-export enum BookingStatus {
-  CONFIRMED = 'confirmed',
-  PENDING = 'pending',
-  CANCELLED = 'cancelled'
 }

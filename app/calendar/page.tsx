@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Booking, BookingPerson, BookingStatus } from '@/lib/entities/types'
+import { Booking, BookingPerson } from '@/lib/entities/types'
 
 export default function CalendarPage() {
   const [bookings, setBookings] = useState<Booking[]>([])
@@ -13,8 +13,7 @@ export default function CalendarPage() {
     person: BookingPerson.MAMA,
     start_date: '',
     end_date: '',
-    comment: '',
-    status: BookingStatus.CONFIRMED
+    comment: ''
   })
 
   // Fetch bookings from API
@@ -104,8 +103,7 @@ export default function CalendarPage() {
       person: BookingPerson.MAMA,
       start_date: '',
       end_date: '',
-      comment: '',
-      status: BookingStatus.CONFIRMED
+      comment: ''
     })
     setShowForm(false)
     setEditingBooking(null)
@@ -116,8 +114,7 @@ export default function CalendarPage() {
       person: booking.person,
       start_date: booking.start_date,
       end_date: booking.end_date,
-      comment: booking.comment || '',
-      status: booking.status
+      comment: booking.comment || ''
     })
     setEditingBooking(booking)
     setShowForm(true)
@@ -157,7 +154,6 @@ export default function CalendarPage() {
   const isDateBooked = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0]
     return bookings.some(booking => 
-      booking.status === 'confirmed' &&
       dateStr >= booking.start_date && 
       dateStr <= booking.end_date
     )
@@ -166,7 +162,6 @@ export default function CalendarPage() {
   const getBookingForDate = (date: Date) => {
     const dateStr = date.toISOString().split('T')[0]
     return bookings.find(booking => 
-      booking.status === 'confirmed' &&
       dateStr >= booking.start_date && 
       dateStr <= booking.end_date
     )
@@ -385,24 +380,6 @@ export default function CalendarPage() {
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
-                </label>
-                <select
-                  id="status"
-                  value={formData.status}
-                  onChange={(e) => setFormData({ ...formData, status: e.target.value as BookingStatus })}
-                  className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                >
-                  {Object.values(BookingStatus).map(status => (
-                    <option key={status} value={status}>
-                      {status.charAt(0).toUpperCase() + status.slice(1)}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
                 <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
                   Komentarz
                 </label>
@@ -465,13 +442,6 @@ export default function CalendarPage() {
                   {booking.comment && (
                     <p className="text-sm text-gray-500 mt-1">{booking.comment}</p>
                   )}
-                  <span className={`inline-block px-2 py-1 text-xs rounded-full mt-1 ${
-                    booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                    booking.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
-                  }`}>
-                    {booking.status}
-                  </span>
                 </div>
                 <div className="flex space-x-2">
                   <button
