@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, quantity, unit, category, expiry_date, notes } = body;
+    const { name, quantity, unit, category, notes } = body;
 
     if (!name || quantity === undefined || !unit) {
       return NextResponse.json(
@@ -53,7 +53,6 @@ export async function POST(request: NextRequest) {
       quantity: parseFloat(quantity),
       unit: unit as InventoryUnit,
       category,
-      expiry_date,
       notes,
     });
 
