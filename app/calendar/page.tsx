@@ -169,7 +169,8 @@ export default function CalendarPage() {
   }
 
   const getFirstDayOfMonth = (date: Date) => {
-    return new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    const day = new Date(date.getFullYear(), date.getMonth(), 1).getDay()
+    return (day + 6) % 7
   }
 
   const isDateBooked = (date: Date) => {
@@ -291,7 +292,7 @@ export default function CalendarPage() {
             </div>
 
             <div className="grid grid-cols-7 gap-0 mb-2">
-              {['Nie', 'Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob'].map(day => (
+              {['Pon', 'Wt', 'Śr', 'Czw', 'Pt', 'Sob', 'Nie'].map(day => (
                 <div key={day} className="p-2 text-center font-medium text-gray-600">
                   {day}
                 </div>
